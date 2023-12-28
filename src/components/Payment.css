@@ -1,0 +1,62 @@
+/* Payment.css */
+
+.payment-container {
+  text-align: center;
+}
+
+.payment-title {
+  color: #3498db; /* Blue color for title */
+}
+
+.total-fees {
+  margin-bottom: 20px;
+}
+
+.payment-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left; /* Align form elements to the left */
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-family: 'Your Custom Font', sans-serif; /* Replace 'Your Custom Font' with the desired font */
+}
+
+#cardholder-name {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px; /* Match the font size with the Stripe card number */
+  box-sizing: border-box;
+}
+
+.card-element {
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: #ff0000; /* Red color for error messages */
+}
+
+button {
+  background-color: #3498db; /* Blue color for buttons */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin:2px;
+}
+
+button:hover {
+  background-color: #2980b9; /* Darker blue color on hover */
+}
+.image-container {
+  text-align: center;
+}

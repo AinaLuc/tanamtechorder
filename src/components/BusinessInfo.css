@@ -1,0 +1,61 @@
+/* BusinessInfo.css */
+
+.business-info-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333; /* Darker text color */
+}
+
+#businessName,
+select,
+textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  color: #555; /* Slightly darker text color */
+  border: 1px solid #ccc; /* Lighter border color */
+}
+
+.fees-section {
+  margin-top: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+button {
+  background-color: #3498db; /* Blue color for the button */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin:3px;
+}
+
+button:hover {
+  background-color: #2980b9; /* Darker blue color on hover */
+}
+
+  .llc-members-section {
+    margin-top: 20px;
+  }
+
+  .llc-member {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+/* Add more styles as needed */

@@ -175,7 +175,7 @@ export default {
       };
 
        try {
-    const response = await axios.post('http://localhost:3000/save-business/', dataToSend);
+    const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/save-business/`, dataToSend);
     // Handle the response from the backend if needed
     console.log('Response from backend:', response.data);
   } catch (error) {

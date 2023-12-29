@@ -46,6 +46,9 @@ export default {
 
     // Load Stripe
     this.loadStripe();
+
+     // Set the base URL for Axios
+  axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
   },
   methods: {
     async loadStripe() {
@@ -114,7 +117,7 @@ export default {
     console.error(error);
   } else {
     // Make the request to create a PaymentIntent
-    const response = await axios.post('http://localhost:3000/create-payment-intent', {
+    const response = await axios.post('/create-payment-intent', {
       amount: this.totalFees , // Amount in cents
       currency: 'usd',
       description: 'Payment for services',

@@ -24,9 +24,9 @@ export default {
   methods: {
      async saveClient() {
                   try {
-                    const response = await axios.post('http://localhost:3000/save-email', {
+                    console.log('url',`${process.env.VUE_APP_BASE_URL}/save-email`)
+                    const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/save-email`, {
                       email: this.email,
-                      // Add other fields as needed based on your backend model
                     });
 
                     const clientId = response.data.clientId;

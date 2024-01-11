@@ -3,7 +3,9 @@
 <template>
   <div class="email-input-container">
     <h2 class="step-title">Step 1: Enter Email</h2>
-    <input v-model="email" type="email" class="email-input" placeholder="Enter your email" />
+    <input v-model="email" type="email" class="email-input" placeholder="Enter your email" required />
+    <label v-if="isEmailInvalid" class="error-label">Invalid email format</label>
+
     <button @click="next" class="next-button">Next</button>
   </div>
      <!-- Add a wrapping div for the image -->
@@ -19,6 +21,7 @@ export default {
   data() {
     return {
       email: "",
+      isEmailInvalid: false,
     };
   },
   methods: {
@@ -37,7 +40,22 @@ export default {
                     console.error('Error saving client:', error);
                   }
                 },
+     validateEmail() {
+      // Use a simple regular expression for email format validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(this.email);
+    },
     next() {
+
+        // Check if the email is empty or has an invalid format before proceeding
+      if (this.email.trim() === "" || !this.validateEmail()) {
+        // Display an error message
+        this.isEmailInvalid = true;
+        return;
+      }
+
+      // Reset the error state
+      this.isEmailInvalid = false;
 
       
     this.saveClient()

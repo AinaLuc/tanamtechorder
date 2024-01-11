@@ -6,6 +6,8 @@
     <div class="form-group">
       <label for="businessName">Business Name:</label>
       <input v-model="businessName" type="text" id="businessName" placeholder="Business Name" />
+      <label v-if="!businessName" class="error-label">Business Name is required</label>
+
     </div>
     <div class="form-group">
       <label for="usState">US State:</label>
@@ -13,10 +15,14 @@
         <option value="" disabled>Select a State</option>
         <option v-for="state in states" :key="state.name" :value="state.name">{{ state.name }}</option>
       </select>
+      <label v-if="!usState" class="error-label">US State is required</label>
+
     </div>
     <div class="form-group">
       <label for="businessDescription">Business Description:</label>
       <textarea v-model="businessDescription" id="businessDescription" placeholder="Business Description"></textarea>
+      <label v-if="!businessDescription" class="error-label">Business Description is required</label>
+
     </div>
      <!-- New section for LLC Members -->
     <div class="llc-members-section">
@@ -25,18 +31,26 @@
         <div class="form-group">
           <label for="firstName">First Name:</label>
           <input v-model="member.firstName" type="text" :id="'firstName' + index" :placeholder="'Member ' + (index + 1) + ' First Name'" />
+           <label v-if="!member.firstName" class="error-label">First Name is required</label>
+
         </div>
         <div class="form-group">
           <label for="lastName">Last Name:</label>
           <input v-model="member.lastName" type="text" :id="'lastName' + index" :placeholder="'Member ' + (index + 1) + ' Last Name'" />
+          <label v-if="!member.lastName" class="error-label">Last Name is required</label>
+
         </div>
         <div class="form-group">
           <label for="address">Address:</label>
           <textarea v-model="member.address" :id="'address' + index" :placeholder="'Member ' + (index + 1) + ' Address'"></textarea>
+          <label v-if="!member.address" class="error-label">Address is required</label>
+
         </div>
         <div class="form-group">
           <label for="dob">Date of Birth:</label>
           <input v-model="member.dateOfBirth" type="date" :id="'dob' + index" :placeholder="'Member ' + (index + 1) + ' Date of Birth'" />
+           <label v-if="!member.dateOfBirth" class="error-label">Date of Birth is required</label>
+
         </div>
       </div>
       <button @click="addMember">Add Member</button>
@@ -140,6 +154,7 @@ export default {
       selectedState: null,
       includeNewspaperFee: false,
       llcMembers: [],
+      isFormValid: false,
 
     };
   },
@@ -183,12 +198,47 @@ export default {
     console.error('Error sending data to backend:', error);
   }
     },
-    next() {
-     this.sendDataToBackend();
+     validateForm() {
+      // Validate all required fields
+      const isBusinessNameValid = this.businessName.trim() !== "";
+      const isUsStateValid = this.usState.trim() !== "";
+      const isBusinessDescriptionValid = this.businessDescription.trim() !== "";
+      const areLLCMembersValid = this.validateLLCMembers();
 
-      // Pass total fees to the next route
-    this.$router.push({ path: "/payment", query: { totalFees: this.calculateTotalFees() } });
+      // Update the form validity state
+      this.isFormValid = isBusinessNameValid && isUsStateValid && isBusinessDescriptionValid && areLLCMembersValid;
+
+      return this.isFormValid;
+    },   
+
+    validateLLCMembers() {
+      // Validate LLC members
+      return this.llcMembers.every(member =>
+        member.firstName.trim() !== "" &&
+        member.lastName.trim() !== "" &&
+        member.address.trim() !== "" &&
+        member.dateOfBirth.trim() !== ""
+      );
     },
+    next() {
+
+
+        if (this.validateForm()) {
+        // Proceed to the next step if the form is valid
+        this.sendDataToBackend();
+        const clientId = this.$route.params.clientId;
+
+        this.$router.push({
+          path: "/payment",
+          query: {
+            totalFees: this.calculateTotalFees(),
+            clientId: clientId,
+          },
+        });
+      } else {
+        // Optionally, you can provide user feedback for invalid form
+        console.error('Form is not valid. Please fill out all required fields.');
+      }    },
     updateTotal() {
       // Find the selected state and update the total
       this.selectedState = this.states.find(state => state.name === this.usState);
@@ -223,5 +273,10 @@ export default {
 .checkbox-text {
   margin-left: 5px; /* Adjust margin as needed */
 }
+.error-label {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
 </style>
 

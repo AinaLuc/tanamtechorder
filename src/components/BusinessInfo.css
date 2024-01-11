@@ -58,4 +58,10 @@ button:hover {
     margin-bottom: 10px;
   }
 
+.error-label {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
 /* Add more styles as needed */

@@ -11,7 +11,7 @@ const routes = [
   { path: '/business-info/', component: BusinessInfo }, // Add the dynamic parameter ":clientId"
 
   { path: '/business-info/:clientId', component: BusinessInfo }, // Add the dynamic parameter ":clientId"
-  { path: '/payment', component: Payment },
+  { path: '/payment/', component: Payment },
   { path: '/thank-you', component: ThankYou }, // Add the Thank You route
 
 ];

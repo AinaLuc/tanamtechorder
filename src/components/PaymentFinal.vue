@@ -36,7 +36,8 @@ export default {
       cardholderName: '', // Added field for cardholder's name
       stripe: null,
       elements: null,
-      processingPayment: false, // Add this line
+      processingPayment: false,
+       isFormValid: false,
 
     };
   },
@@ -51,6 +52,15 @@ export default {
   axios.defaults.baseURL = process.env.VUE_APP_BASE_URL;
   },
   methods: {
+     validateForm() {
+      // Validate cardholder name and any other form fields if needed
+      const isCardholderNameValid = this.cardholderName.trim() !== '';
+
+      // Update the form validity state
+      this.isFormValid = isCardholderNameValid;
+
+      return this.isFormValid;
+    },
     async loadStripe() {
       // Load the Stripe.js script asynchronously
       const stripe = await loadStripe('pk_test_51MnMGrE1uOh1UBiwtQAeUHtlXoVdLNBkdVbgoh05N7dQ2VySvDgaZnfBkGlFjr2ou3QiGZQ32t4ZKY61nhu7qXCu00xWkHCRQr');
@@ -97,6 +107,8 @@ export default {
       this.$router.push("/business-info");
     },
     async submit() {
+      if (this.validateForm()) {
+
   this.processingPayment = true;
 
   // Create an instance of the card Element.
@@ -116,8 +128,17 @@ export default {
     // Handle errors
     console.error(error);
   } else {
+    console.log('Request Payload:', {
+  clientId: this.$route.query.clientId,
+  amount: this.totalFees,
+  currency: 'usd',
+  description: 'Payment for services',
+  payment_method: paymentMethod.id,
+});
     // Make the request to create a PaymentIntent
     const response = await axios.post('/create-payment-intent', {
+  clientId: this.$route.query.clientId,
+
       amount: this.totalFees , // Amount in cents
       currency: 'usd',
       description: 'Payment for services',
@@ -141,7 +162,11 @@ export default {
 
     }
   }
-}
+ } else {
+        // Optionally, you can provide user feedback for invalid form
+        console.error('Form is not valid. Please fill out all required fields.');
+      }
   },
+}
 };
 </script>

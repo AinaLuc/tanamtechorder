@@ -63,7 +63,7 @@ export default {
     },
     async loadStripe() {
       // Load the Stripe.js script asynchronously
-      const stripe = await loadStripe('pk_test_51MnMGrE1uOh1UBiwtQAeUHtlXoVdLNBkdVbgoh05N7dQ2VySvDgaZnfBkGlFjr2ou3QiGZQ32t4ZKY61nhu7qXCu00xWkHCRQr');
+      const stripe = await loadStripe('pk_live_51MnMGrE1uOh1UBiwgHnSC8b8OKZhFEuSGIHjTa88gUmJ82JADCkaadlPd0tOrjc6JfrLkGSOkV714SgnV8QkvlKF00PrqzpBgj');
       this.stripe = stripe;
       this.elements = stripe.elements();
 

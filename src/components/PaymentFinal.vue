@@ -106,6 +106,10 @@ export default {
     prev() {
       this.$router.push("/business-info");
     },
+     showErrorMessage(message) {
+    // Display the error message to the user using a modal or an alert
+    alert(`Error: ${message}`);
+  },
     async submit() {
       if (this.validateForm()) {
 
@@ -127,6 +131,10 @@ export default {
   if (error) {
     // Handle errors
     console.error(error);
+    this.showErrorMessage(error.message); // Show error message
+    this.processingPayment = false;
+
+
   } else {
     console.log('Request Payload:', {
   clientId: this.$route.query.clientId,
@@ -153,6 +161,10 @@ export default {
     if (error) {
       // Handle errors
       console.error(error);
+              this.showErrorMessage(error.message); // Show error message
+              this.processingPayment = false;
+
+
     } else {
       // Payment succeeded
       console.log(paymentIntent);

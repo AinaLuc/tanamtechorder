@@ -130,6 +130,7 @@ export default {
 
   if (error) {
     // Handle errors
+    console.log('error in')
     console.error(error);
     this.showErrorMessage(error.message); // Show error message
     this.processingPayment = false;
@@ -160,6 +161,7 @@ export default {
 
     if (error) {
       // Handle errors
+      console.log('error 2')
       console.error(error);
               this.showErrorMessage(error.message); // Show error message
               this.processingPayment = false;

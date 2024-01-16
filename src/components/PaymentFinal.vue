@@ -22,14 +22,21 @@
    <div class="image-container">
       <img src="@/assets/pay2.jpg" alt="Payment Image" class="payment-image"  style="width: 80%; margin: 0 auto;"/>
     </div>
+     <!-- Include the ErrorModal component -->
+  <error-modal :error-message="errorMessage" @clear-error-message="clearErrorMessage" />
 </template>
 
 <script>
 import { loadStripe } from '@stripe/stripe-js/pure';
 import axios from 'axios';
 import './Payment.css'; // Import the CSS file
+import ErrorModal from './ErrorModal.vue';
+
 
 export default {
+  components: {
+       ErrorModal,
+  },
   data() {
     return {
       totalFees: 0,
@@ -38,6 +45,8 @@ export default {
       elements: null,
       processingPayment: false,
        isFormValid: false,
+       errorMessage: null,
+
 
     };
   },
@@ -60,6 +69,12 @@ export default {
       this.isFormValid = isCardholderNameValid;
 
       return this.isFormValid;
+    },
+    showErrorMessage(message) {
+      this.errorMessage = message;
+    },
+    clearErrorMessage() {
+      this.errorMessage = null;
     },
     async loadStripe() {
       // Load the Stripe.js script asynchronously
@@ -106,81 +121,73 @@ export default {
     prev() {
       this.$router.push("/business-info");
     },
-     showErrorMessage(message) {
-    // Display the error message to the user using a modal or an alert
-    alert(`Error: ${message}`);
-  },
-    async submit() {
-      if (this.validateForm()) {
+     
+   async submit() {
+  try {
+    if (this.validateForm()) {
+      this.processingPayment = true;
 
-  this.processingPayment = true;
+      // Create an instance of the card Element.
+      const cardElement = this.elements.getElement('card');
 
-  // Create an instance of the card Element.
+      // Collect the payment method details
+      const { paymentMethod, error:stripeError } = await this.stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          name: this.cardholderName,
+        },
+      });
 
-  const cardElement = this.elements.getElement('card');
+      if (stripeError) {
+        // Handle errors
+        console.error('Error creating payment method:', error);
+        this.showErrorMessage(error.message); // Show error message
+        this.processingPayment = false;
+        return; // Exit early if there's an error
+      }
 
-  // Collect the payment method details
-  const { paymentMethod, error } = await this.stripe.createPaymentMethod({
-    type: 'card',
-    card: cardElement,
-    billing_details: {
-      name: this.cardholderName,
-    },
-  });
+      // Continue with the rest of your code using paymentMethod
+      const response = await axios.post('/create-payment-intent', {
+        clientId: this.$route.query.clientId,
+        amount: this.totalFees,
+        currency: 'usd',
+        description: 'Payment for services',
+        payment_method: paymentMethod.id,
+      });
 
-  if (error) {
-    // Handle errors
-    console.log('error in')
-    console.error(error);
-    this.showErrorMessage(error.message); // Show error message
-    this.processingPayment = false;
+      const clientSecret = response.data.clientSecret;
 
+      // Use the clientSecret to confirm the payment on the client side
+      const { paymentIntent, error } = await this.stripe.handleCardPayment(clientSecret);
 
-  } else {
-    console.log('Request Payload:', {
-  clientId: this.$route.query.clientId,
-  amount: this.totalFees,
-  currency: 'usd',
-  description: 'Payment for services',
-  payment_method: paymentMethod.id,
-});
-    // Make the request to create a PaymentIntent
-    const response = await axios.post('/create-payment-intent', {
-  clientId: this.$route.query.clientId,
-
-      amount: this.totalFees , // Amount in cents
-      currency: 'usd',
-      description: 'Payment for services',
-      payment_method: paymentMethod.id, // Pass the Payment Method ID
-    });
-
-    const clientSecret = response.data.clientSecret;
-
-    // Use the clientSecret to confirm the payment on the client side
-    const { paymentIntent, error } = await this.stripe.handleCardPayment(clientSecret);
-
-    if (error) {
-      // Handle errors
-      console.log('error 2')
-      console.error(error);
-              this.showErrorMessage(error.message); // Show error message
-              this.processingPayment = false;
-
+      if (error) {
+        // Handle errors from Stripe
+        console.error('Stripe error:', error);
+        this.showErrorMessage(error.message); // Show error message
+        this.processingPayment = false;
+      } else {
+        // Payment succeeded
+        console.log(paymentIntent);
+        this.processingPayment = false;
+        this.$router.push('/thank-you');
+      }
 
     } else {
-      // Payment succeeded
-      console.log(paymentIntent);
-        this.processingPayment = false;
-
-      this.$router.push('/thank-you');
-
+      // Optionally, you can provide user feedback for invalid form
+      console.error('Form is not valid. Please fill out all required fields.');
     }
+  } catch (error) {
+    // Handle errors
+    console.error('Error:', error);
+    this.showErrorMessage('An error occurred during payment processing.');
+  } finally {
+    // Set processingPayment to false to stop loading spinner
+    this.processingPayment = false;
   }
- } else {
-        // Optionally, you can provide user feedback for invalid form
-        console.error('Form is not valid. Please fill out all required fields.');
-      }
-  },
+}
+,
+
 }
 };
 </script>

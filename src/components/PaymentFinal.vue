@@ -22,6 +22,11 @@
    <div class="image-container">
       <img src="@/assets/pay2.jpg" alt="Payment Image" class="payment-image"  style="width: 80%; margin: 0 auto;"/>
     </div>
+      <error-modal
+      :error-message="errorMessage"
+      @clear-error-message="clearErrorMessage"
+      @return-to-payment="resetPaymentForm"
+    />
 </template>
 
 <script>
@@ -38,6 +43,8 @@ export default {
       elements: null,
       processingPayment: false,
        isFormValid: false,
+             errorMessage: null,
+
 
     };
   },
@@ -109,8 +116,18 @@ export default {
      showErrorMessage(message) {
     // Display the error message to the user using a modal or an alert
     alert(`Error: ${message}`);
-  },
+  }, 
+    clearErrorMessage() {
+      this.errorMessage = null;
+    },
+    resetPaymentForm() {
+      // Reset the form fields and any other necessary data
+      this.cardholderName = '';
+      this.errorMessage = null;
+      // Additional logic for resetting the form if needed
+    },
     async submit() {
+         try {
       if (this.validateForm()) {
 
   this.processingPayment = true;
@@ -177,6 +194,12 @@ export default {
  } else {
         // Optionally, you can provide user feedback for invalid form
         console.error('Form is not valid. Please fill out all required fields.');
+      }
+    }catch(error) {
+        console.error('Error:', error);
+        this.showErrorMessage('An error occurred during payment processing.');
+      } finally {
+        this.processingPayment = false;
       }
   },
 }

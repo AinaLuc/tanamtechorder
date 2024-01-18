@@ -1,24 +1,39 @@
-// src/router.js
+// Import the createRouter function and createWebHistory from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router';
-import EmailInput from './components/EmailInput.vue';
+
+// Import your components
+import Home from './components/EmailInput.vue';
 import BusinessInfo from './components/BusinessInfo.vue';
 import Payment from './components/PaymentFinal.vue';
 import ThankYou from './components/ThankYou.vue';
 
-
-const routes = [
-  { path: '/', component: EmailInput },
-  { path: '/business-info/', component: BusinessInfo }, // Add the dynamic parameter ":clientId"
-
-  { path: '/business-info/:clientId', component: BusinessInfo }, // Add the dynamic parameter ":clientId"
-  { path: '/payment/', component: Payment },
-  { path: '/thank-you', component: ThankYou }, // Add the Thank You route
-
-];
-
+// Create a router instance
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+  // Use createWebHistory for browser history navigation
+  history: createWebHistory(process.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      name: 'Home',
+      component: Home,
+    },
+    {
+      path: '/business-info/:clientId',
+      name: 'BusinessInfo',
+      component: BusinessInfo,
+    },
+    {
+      path: '/payment/:clientId',
+      name: 'Payment',
+      component: Payment,
+    },
+    {
+      path: '/thank-you',
+      name: 'ThankYou',
+      component: ThankYou,
+    },
+  ],
 });
 
+// Export the router instance
 export default router;

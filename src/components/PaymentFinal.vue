@@ -1,5 +1,6 @@
 <!-- Payment.vue -->
 <template>
+  <div>
   <div class="payment-container">
     <h2 class="payment-title">Step 3: Payment</h2>
     <p class="total-fees">Total Fees: ${{ totalFees }}</p>
@@ -21,9 +22,11 @@
   </div>
    <div class="image-container">
       <img src="@/assets/pay2.jpg" alt="Payment Image" class="payment-image"  style="width: 80%; margin: 0 auto;"/>
+        <error-modal :error-message="errorMessage" @clear-error-message="clearErrorMessage" />
+
+    </div>
     </div>
      <!-- Include the ErrorModal component -->
-  <error-modal :error-message="errorMessage" @clear-error-message="clearErrorMessage" />
 </template>
 
 <script>

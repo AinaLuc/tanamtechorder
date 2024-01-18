@@ -1,17 +1,21 @@
 <!-- EmailInput.vue -->
 
-<template>
-  <div class="email-input-container">
-    <h2 class="step-title">Step 1: Enter Email</h2>
-    <input v-model="email" type="email" class="email-input" placeholder="Enter your email" required />
-    <label v-if="isEmailInvalid" class="error-label">Invalid email format</label>
 
-    <button @click="next" class="next-button">Next</button>
-  </div>
-     <!-- Add a wrapping div for the image -->
+<template>
+  <div>
+    <div class="email-input-container">
+      <h2 class="step-title">Step 1: Enter Email</h2>
+      <input v-model="email" type="email" class="email-input" placeholder="Enter your email" required />
+      <label v-if="isEmailInvalid" class="error-label">Invalid email format</label>
+
+      <button @click="next" class="next-button">Next</button>
+    </div>
+
+    <!-- Add a wrapping div for the image -->
     <div class="image-container">
       <img src="@/assets/testimonial.png" alt="Your Image Description" class="form-image" />
     </div>
+  </div>
 </template>
 
 <script>

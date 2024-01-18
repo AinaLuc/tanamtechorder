@@ -1,16 +1,25 @@
-<!-- ErrorModal.vue -->
 <template>
-  <b-modal v-if="errorMessage" title="Error" @hidden="clearErrorMessage">
-    {{ errorMessage }}
-  </b-modal>
+  <div>
+    <ErrorModal :errorMessage="someErrorMessage" @clear-error-message="clearErrorMessage" />
+    <!-- Some other content -->
+  </div>
 </template>
 
 <script>
+import ErrorModal from '@/components/ErrorModal.vue';
+
 export default {
-  props: ['errorMessage'],
+  components: {
+    ErrorModal,
+  },
+  data() {
+    return {
+      someErrorMessage: 'An error occurred!',
+    };
+  },
   methods: {
     clearErrorMessage() {
-      this.$emit('clear-error-message');
+      // Handle clearing error message
     },
   },
 };

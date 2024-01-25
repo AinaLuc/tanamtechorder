@@ -3,18 +3,7 @@
 <template>
   <div class="email-input-container">
 
-      <!-- Tawk.to Script -->
-    <script type="text/javascript">
-      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-      (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/65b23cb50ff6374032c4c642/1hl03q9nk';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-      })();
-    </script>
+    
     <!-- End of Tawk.to Script -->
     <h2 class="step-title">Step 1: Enter Email</h2>
     <input v-model="email" type="email" class="email-input" placeholder="Enter your email" required />

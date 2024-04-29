@@ -33,9 +33,77 @@
 .next-button:hover {
   background-color: #2980b9; /* Darker blue color on hover */
 }
+
+/* Image container styles */
 .image-container {
   margin-top: 20px;
+  max-width: 100%;
+  height: auto;
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
+}
+
+.form-image {
+  width: 100%;
+  height: auto;
+}
+
+/* Additional info container styles */
+.additional-info-container {
+  margin-top: 20px;
+  text-align: center;
+  color: #333; /* Change text color to coherent */
+}
+
+.additional-info-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #3498db; /* Blue color for headers */
+}
+
+.additional-info-container ul {
+  list-style-type: none;
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.additional-info-container li {
+  margin-bottom: 5px;
+}
+
+.additional-info-container p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #666; /* Change text color to coherent */
+}
+
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .email-input-container {
+    max-width: 80%; /* Adjust container width for smaller screens */
+  }
+  
+  .email-input {
+    font-size: 16px; /* Increase input font size for smaller screens */
+  }
+  
+  .next-button {
+    font-size: 14px; /* Decrease button font size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .email-input-container {
+    max-width: 90%; /* Further adjust container width for extra small screens */
+  }
+  
+  .email-input {
+    font-size: 14px; /* Further increase input font size for extra small screens */
+  }
+  
+  .next-button {
+    font-size: 12px; /* Further decrease button font size for extra small screens */
+  }
 }

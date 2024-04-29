@@ -1,6 +1,3 @@
-<!-- EmailInput.vue -->
-
-
 <template>
   <div>
     <div class="email-input-container">
@@ -14,6 +11,33 @@
     <!-- Add a wrapping div for the image -->
     <div class="image-container">
       <img src="@/assets/testimonial.png" alt="Your Image Description" class="form-image" />
+    </div>
+
+    <!-- Additional Information Section -->
+    <div class="additional-info-container">
+      <h3>Benefits</h3>
+      <ul>
+        <li>EIN included</li>
+        <!-- Add more benefits as needed -->
+      </ul>
+      
+      <h3>List of Documents for E2 visa</h3>
+      <ul>
+        <li>Example business plan</li>
+        <li>Example cover letter</li>
+        <li> DS 160 Example
+        </li>
+        <li> I 129 Example
+        </li>
+        <li> Free cases study
+        </li>
+
+
+        <!-- Add more documents as needed -->
+      </ul>
+      
+      
+      <!-- Add examples of templates as needed -->
     </div>
   </div>
 </template>
@@ -29,29 +53,28 @@ export default {
     };
   },
   methods: {
-     async saveClient() {
-                  try {
-                    console.log('url',`${process.env.VUE_APP_BASE_URL}/save-email`)
-                    const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/save-email`, {
-                      email: this.email,
-                    });
+    async saveClient() {
+      try {
+        console.log('url',`${process.env.VUE_APP_BASE_URL}/save-email`)
+        const response = await axios.post(`${process.env.VUE_APP_BASE_URL}/save-email`, {
+          email: this.email,
+        });
 
-                    const clientId = response.data.clientId;
+        const clientId = response.data.clientId;
 
-                    return clientId; // Returning the clientId for chaining
+        return clientId; // Returning the clientId for chaining
 
-                  } catch (error) {
-                    console.error('Error saving client:', error);
-                  }
-                },
-     validateEmail() {
+      } catch (error) {
+        console.error('Error saving client:', error);
+      }
+    },
+    validateEmail() {
       // Use a simple regular expression for email format validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(this.email);
     },
     next() {
-
-        // Check if the email is empty or has an invalid format before proceeding
+      // Check if the email is empty or has an invalid format before proceeding
       if (this.email.trim() === "" || !this.validateEmail()) {
         // Display an error message
         this.isEmailInvalid = true;
@@ -61,18 +84,15 @@ export default {
       // Reset the error state
       this.isEmailInvalid = false;
 
-      
-    this.saveClient()
-      .then(clientId => {
-        // Do something with the clientId if needed
-        this.$router.push(`/business-info/${clientId}`);
-      })
-      .catch(error => {
-        // Handle the error
-        console.error('Error in next():', error);
-      });
- 
-               
+      this.saveClient()
+        .then(clientId => {
+          // Do something with the clientId if needed
+          this.$router.push(`/business-info/${clientId}`);
+        })
+        .catch(error => {
+          // Handle the error
+          console.error('Error in next():', error);
+        });
     },
   },
 };
